@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Süper Mario Basit Oyun</title>
+  <style>
+    body {
+      margin: 0;
+      overflow: hidden;
+    }
+    canvas {
+      display: block;
+      background: skyblue;
+    }
+  </style>
+</head>
+<body>
+  <canvas id="gameCanvas"></canvas>
+
+  <script>
+    const canvas = document.getElementById('gameCanvas');
+    const ctx = canvas.getContext('2d');
+
+    // Canvas boyutu
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    // Mario özellikleri
+    const mario = {
+      x: 50,
+      y: canvas.height - 100,
+      width: 50,
+      height: 50,
+      color: 'red',
+      speed: 5,
+      dx: 0, // x ekseni hızı
+    };
+
+    // Oyun döngüsü
+    function gameLoop() {
+      clearCanvas();
+      drawMario();
+      updateMario();
+      requestAnimationFrame(gameLoop);
+    }
+
+    // Canvas temizleme
+    function clearCanvas() {
+      ctx.fillStyle = 'skyblue';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+    }
+
+    // Mario çizimi
+    function drawMario() {
+      ctx.fillStyle = mario.color;
+      ctx.fillRect(mario.x, mario.y, mario.width, mario.height);
+    }
+
+    // Mario'nun hareketi
+    function updateMario() {
+      mario.x += mario.dx;
+
+      // Duvar kontrolü
+      if (mario.x < 0) mario.x = 0;
+      if (mario.x + mario.width > canvas.width) mario.x = canvas.width - mario.width;
+    }
+
+    // Klavye kontrolleri
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowRight') mario.dx = mario.speed;
+      if (e.key === 'ArrowLeft') mario.dx = -mario.speed;
+    });
+
+    document.addEventListener('keyup', (e) => {
+      if (e.key === 'ArrowRight' || e.key === 'ArrowLeft') mario.dx = 0;
+    });
+
+    // Oyunu başlat
+    gameLoop();
+  </script>
+</body>
+</html>
